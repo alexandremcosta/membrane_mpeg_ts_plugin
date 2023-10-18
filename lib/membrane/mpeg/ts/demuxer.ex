@@ -38,12 +38,13 @@ defmodule Membrane.MPEG.TS.Demuxer do
   end
 
   @impl true
-  def handle_pad_added(pad = {Membrane.Pad, _, {:stream_id, sid}}, _, state) do
-    format =
-      case Map.fetch!(state.demuxer.pmt.streams, sid) do
-        %{stream_type: :H264} -> %Membrane.H264{alignment: :nalu}
-        _ -> %Membrane.RemoteStream{}
-      end
+  def handle_pad_added(pad = {Membrane.Pad, _, _}, _, state) do
+    # format =
+    #   case Map.fetch!(state.demuxer.pmt.streams, sid) do
+    #     %{stream_type: :H264} -> %Membrane.H264{alignment: :nalu}
+    #     _ -> %Membrane.RemoteStream{}
+    #   end
+    format = %Membrane.RemoteStream{}
 
     {[stream_format: {pad, format}], state}
   end
